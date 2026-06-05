@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Library Scanner Monitor
+        env:
+          REPO: ${{ github.repository }}
         run: |
           curl -s -X POST \
             -H "Authorization: Bearer ${{ secrets.SCANNER_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/hunter78602/Library-Scanner-Pro/actions/workflows/monitor.yml/dispatches \
-            -d '{"ref":"main"}'
+            -d "{\"ref\":\"main\",\"inputs\":{\"package\":\"${REPO}\",\"registry\":\"GitHub\"}}"
